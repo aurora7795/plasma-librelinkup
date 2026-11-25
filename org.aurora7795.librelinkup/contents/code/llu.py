@@ -10,6 +10,8 @@ Uses the unofficial LibreView follower API (can change without notice).
 
   llu.py            fetch the latest reading
   llu.py --signin   ask for email and password with kdialog, save, then fetch
+  llu.py --status   print the signed-in email and where the password is kept
+  llu.py --signout  forget the password, email and session
 
 Credentials are never taken from the command line or the environment: the
 widget has no way to hand them over without exposing them in the process
@@ -73,6 +75,34 @@ def kr_lookup():
         return r.stdout.decode() if r.returncode == 0 else ""
     except Exception:
         return ""
+
+
+def kr_clear():
+    try:
+        subprocess.run(["secret-tool", "clear"] + KR_ATTRS, capture_output=True, timeout=30)
+    except Exception:
+        pass
+
+
+def status():
+    cfg = read_config()
+    if cfg.get("password"):
+        where = "file"
+    elif cfg.get("email") and kr_lookup():
+        where = "keyring"
+    else:
+        where = "none"
+    out({"ok": True, "email": cfg.get("email", ""), "storage": where})
+
+
+def signout():
+    kr_clear()
+    for path in (CONFIG, CACHE):
+        try:
+            os.remove(path)
+        except FileNotFoundError:
+            pass
+    out({"ok": True, "email": "", "storage": "none"})
 
 
 def migrate_password(cfg):
@@ -233,6 +263,10 @@ def signin():
 
 
 def main():
+    if "--status" in sys.argv:
+        status()
+    if "--signout" in sys.argv:
+        signout()
     if "--signin" in sys.argv:
         signin()
     cfg = read_config()

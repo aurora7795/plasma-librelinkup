@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls as QQC2
 import org.kde.plasma.components as PlasmaComponents
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid
@@ -9,9 +10,10 @@ import org.kde.plasma.plasmoid
 //   tiny    value + trend arrow, scaled to fill
 //   small   + unit toggle and age
 //   medium  + 12-hour graph
-//   large   + range/average and buttons
+//   large   + range/average
+//   (small and up also get a hamburger menu in the top-right corner)
 //   xlarge  + disclaimer
-ColumnLayout {
+Item {
     id: full
 
     required property var backend
@@ -21,19 +23,23 @@ ColumnLayout {
     readonly property bool showDetails: height >= gu * 5.5 && width >= gu * 7
     readonly property bool showGraph: report !== null && height >= gu * 11 && width >= gu * 12
     readonly property bool showStats: report !== null && height >= gu * 14 && width >= gu * 14
-    readonly property bool showButtons: (height >= gu * 16 && width >= gu * 16)
-        || (report === null && height >= gu * 8 && width >= gu * 10)
+    // With no reading yet, offer sign-in right on the widget.
+    readonly property bool showSignIn: report === null && height >= gu * 8 && width >= gu * 10
     readonly property bool showNote: height >= gu * 19 && width >= gu * 16
 
     Layout.minimumWidth: gu * 4
     Layout.minimumHeight: gu * 3
     Layout.preferredWidth: gu * 22
     Layout.preferredHeight: gu * 20
-    spacing: Kirigami.Units.smallSpacing
 
     Keys.onPressed: function(event) {
         if (event.key === Qt.Key_R) backend.refresh()
     }
+
+    ColumnLayout {
+    id: col
+    anchors.fill: parent
+    spacing: Kirigami.Units.smallSpacing
 
     // Value and trend arrow, scaled to the space available.
     Item {
@@ -112,28 +118,13 @@ ColumnLayout {
         }
     }
 
-    RowLayout {
+    PlasmaComponents.Button {
         Layout.alignment: Qt.AlignHCenter
-        visible: full.showButtons
-        spacing: Kirigami.Units.smallSpacing
-
-        PlasmaComponents.Button {
-            icon.name: "user-identity"
-            text: backend.needsSetup || !full.report ? i18n("Sign in…") : i18n("Account…")
-            enabled: !backend.busy
-            onClicked: backend.signIn()
-        }
-        PlasmaComponents.Button {
-            icon.name: "view-refresh"
-            text: i18n("Refresh")
-            enabled: !backend.busy
-            onClicked: backend.refresh()
-        }
-        PlasmaComponents.Button {
-            icon.name: "configure"
-            text: i18n("Settings…")
-            onClicked: Plasmoid.internalAction("configure").trigger()
-        }
+        visible: full.showSignIn
+        icon.name: "user-identity"
+        text: i18n("Sign in…")
+        enabled: !backend.busy
+        onClicked: backend.signIn()
     }
 
     PlasmaComponents.Label {
@@ -144,5 +135,46 @@ ColumnLayout {
         opacity: 0.6
         font: Kirigami.Theme.smallFont
         text: i18n("Not a medical device. Do not use for treatment or dosing decisions. Not affiliated with or endorsed by Abbott. Uses the unofficial LibreView API.")
+    }
+    }
+
+    HoverHandler { id: hover }
+
+    // Hamburger menu: faint until you hover, so it stays out of the way.
+    PlasmaComponents.ToolButton {
+        anchors.top: parent.top
+        anchors.right: parent.right
+        visible: full.showDetails
+        opacity: hover.hovered || menu.visible ? 1 : 0.35
+        icon.name: "application-menu"
+        display: QQC2.AbstractButton.IconOnly
+        text: i18n("Menu")
+        onClicked: menu.visible ? menu.close() : menu.popup(this, 0, height)
+
+        PlasmaComponents.Menu {
+            id: menu
+            PlasmaComponents.MenuItem {
+                text: i18n("Refresh now")
+                icon.name: "view-refresh"
+                enabled: !backend.busy
+                onTriggered: backend.refresh()
+            }
+            PlasmaComponents.MenuItem {
+                text: backend.mmol ? i18n("Show mg/dL") : i18n("Show mmol/L")
+                icon.name: "exchange-positions"
+                onTriggered: backend.toggleUnit()
+            }
+            PlasmaComponents.MenuItem {
+                text: full.report ? i18n("Account…") : i18n("Sign in…")
+                icon.name: "user-identity"
+                enabled: !backend.busy
+                onTriggered: backend.signIn()
+            }
+            PlasmaComponents.MenuItem {
+                text: i18n("Settings…")
+                icon.name: "configure"
+                onTriggered: Plasmoid.internalAction("configure").trigger()
+            }
+        }
     }
 }

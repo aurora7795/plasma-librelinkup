@@ -18,6 +18,12 @@ the same LibreView client as the
   the reading is over 15 minutes old.
 - Popup with large reading, age, 12-hour graph with your target range shaded,
   and range / average. Click the unit label to switch mg/dL and mmol/L.
+- A **☰** menu in the corner (faint until you hover): Refresh now, switch unit,
+  Sign in / Account, Settings. The same actions are in the right-click menu,
+  which also works when the widget is too small for the ☰.
+- **Configure…** has an **Account** page (who is signed in, where the password
+  is kept, change account, sign out and forget the password), **General**
+  (unit, refresh interval) and **Notifications**.
 - Notifications for low, high, rising/falling fast and lost signal, each with
   its own toggle, plus thresholds and a repeat interval (right-click the widget,
   **Configure…**, **Notifications**).
@@ -40,7 +46,7 @@ Requires `python3` (standard library only) and `kdialog` (for sign-in).
 
 ## Sign in
 
-Click **Sign in…** in the popup. A KDE dialog asks for the **LibreLinkUp
+Choose **Sign in…** from the ☰ menu or right-click menu (or use **Configure… → Account**). A KDE dialog asks for the **LibreLinkUp
 follower** account email and password, the account your Libre app shares
 with, not the sensor owner's login. If LibreLinkUp asks you to accept new terms,
 do that in the phone app first.
@@ -78,8 +84,8 @@ so do not rely on them as a safety alarm.
 - `contents/ui/main.qml`: polling, alert logic, notifications
 - `contents/ui/CompactRepresentation.qml`: the panel label
 - `contents/ui/FullRepresentation.qml`, `Graph.qml`: the popup and graph
-- `contents/ui/config*.qml`, `contents/config/`: settings pages and schema
-- `contents/code/llu.py`: LibreLinkUp client (login, region redirect, token cache, fetch)
+- `contents/ui/config*.qml`, `contents/config/`: settings pages (Account, General, Notifications) and schema
+- `contents/code/llu.py`: LibreLinkUp client (login, region redirect, token cache, fetch, `--signin`, `--status`, `--signout`)
 
 ## License
 

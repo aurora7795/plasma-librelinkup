@@ -151,6 +151,27 @@ PlasmoidItem {
         evaluate("fastUp", cfg.fastOn && report.trend === 5, "Rising fast", body, "normal")
     }
 
+    // Right-click menu: works at every size, including the tiny desktop view.
+    Plasmoid.contextualActions: [
+        PlasmaCore.Action {
+            text: i18n("Refresh now")
+            icon.name: "view-refresh"
+            enabled: !root.busy
+            onTriggered: root.refresh()
+        },
+        PlasmaCore.Action {
+            text: root.mmol ? i18n("Show mg/dL") : i18n("Show mmol/L")
+            icon.name: "exchange-positions"
+            onTriggered: root.toggleUnit()
+        },
+        PlasmaCore.Action {
+            text: root.report ? i18n("Account…") : i18n("Sign in…")
+            icon.name: "user-identity"
+            enabled: !root.busy
+            onTriggered: root.signIn()
+        }
+    ]
+
     // ---- representations ------------------------------------------------------
     // In a panel: a compact label that opens a popup. On the desktop: the full
     // view itself, which adapts to however big the widget is made.
