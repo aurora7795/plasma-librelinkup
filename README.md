@@ -18,6 +18,7 @@ the same LibreView client as the
   the reading is over 15 minutes old.
 - Popup with large reading, age, 12-hour graph with your target range shaded,
   and range / average. Click the unit label to switch mg/dL and mmol/L.
+- On the desktop, switch the widget background off in edit mode (**Show Background**) for a transparent widget; the text and graph get an outline so they stay readable on any wallpaper.
 - A **☰** menu in the corner (faint until you hover): Refresh now, switch unit,
   Sign in / Account, Settings. The same actions are in the right-click menu,
   which also works when the widget is too small for the ☰.

@@ -20,6 +20,10 @@ Item {
     readonly property var report: backend.report
 
     readonly property real gu: Kirigami.Units.gridUnit
+    // Outline colour for text when there is no widget background.
+    readonly property bool outline: backend.noBackground
+    readonly property color outlineColor: Qt.rgba(Kirigami.Theme.backgroundColor.r,
+        Kirigami.Theme.backgroundColor.g, Kirigami.Theme.backgroundColor.b, 0.85)
     readonly property bool showDetails: height >= gu * 5.5 && width >= gu * 7
     readonly property bool showGraph: report !== null && height >= gu * 11 && width >= gu * 12
     readonly property bool showStats: report !== null && height >= gu * 14 && width >= gu * 14
@@ -56,6 +60,8 @@ Item {
             minimumPixelSize: 8
             fontSizeMode: Text.Fit
             font.bold: true
+            style: full.outline ? Text.Outline : Text.Normal
+            styleColor: full.outlineColor
             textFormat: Text.PlainText
             opacity: backend.stale ? 0.6 : 1
             color: backend.urgentReading ? Kirigami.Theme.negativeTextColor : Kirigami.Theme.textColor
@@ -76,6 +82,8 @@ Item {
         color: backend.error ? Kirigami.Theme.negativeTextColor : Kirigami.Theme.textColor
         opacity: backend.error ? 1 : 0.75
         font: Kirigami.Theme.smallFont
+        style: full.outline ? Text.Outline : Text.Normal
+        styleColor: full.outlineColor
         text: {
             if (backend.error) return backend.error
             if (!full.report) return i18n("loading…")
@@ -99,6 +107,8 @@ Item {
         visible: full.showGraph
         report: full.report
         mmol: backend.mmol
+        outline: full.outline
+        outlineColor: full.outlineColor
     }
 
     PlasmaComponents.Label {
@@ -107,6 +117,8 @@ Item {
         visible: full.showStats && full.report.history.length > 1
         opacity: 0.75
         font: Kirigami.Theme.smallFont
+        style: full.outline ? Text.Outline : Text.Normal
+        styleColor: full.outlineColor
         text: {
             if (!full.report) return ""
             var v = full.report.history.map(function(p) { return p.mgdl })
@@ -134,6 +146,8 @@ Item {
         wrapMode: Text.Wrap
         opacity: 0.6
         font: Kirigami.Theme.smallFont
+        style: full.outline ? Text.Outline : Text.Normal
+        styleColor: full.outlineColor
         text: i18n("Not a medical device. Do not use for treatment or dosing decisions. Not affiliated with or endorsed by Abbott. Uses the unofficial LibreView API.")
     }
     }

@@ -16,6 +16,16 @@ PlasmoidItem {
     property int seq: 0
 
     readonly property var cfg: Plasmoid.configuration
+
+    // Desktop: let the user switch the widget background off (edit mode,
+    // "Show Background"). With it off, text and graph get an outline so they
+    // stay readable on any wallpaper.
+    Plasmoid.backgroundHints: PlasmaCore.Types.StandardBackground | PlasmaCore.Types.ConfigurableBackground
+    readonly property bool onPanel: Plasmoid.formFactor === PlasmaCore.Types.Horizontal
+                                    || Plasmoid.formFactor === PlasmaCore.Types.Vertical
+    readonly property bool noBackground: !onPanel
+        && (Plasmoid.effectiveBackgroundHints
+            & (PlasmaCore.Types.StandardBackground | PlasmaCore.Types.TranslucentBackground)) === 0
     readonly property bool mmol: String(cfg.unit).toLowerCase() === "mmol"
     readonly property var arrows: ["", "↓", "↘", "→", "↗", "↑"]
     readonly property int signalLostMinutes: 30
@@ -175,9 +185,7 @@ PlasmoidItem {
     // ---- representations ------------------------------------------------------
     // In a panel: a compact label that opens a popup. On the desktop: the full
     // view itself, which adapts to however big the widget is made.
-    preferredRepresentation: (Plasmoid.formFactor === PlasmaCore.Types.Horizontal
-                              || Plasmoid.formFactor === PlasmaCore.Types.Vertical)
-        ? compactRepresentation : fullRepresentation
+    preferredRepresentation: onPanel ? compactRepresentation : fullRepresentation
     compactRepresentation: CompactRepresentation { backend: root }
     fullRepresentation: FullRepresentation { backend: root }
 }
