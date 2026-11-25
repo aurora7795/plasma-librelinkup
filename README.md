@@ -89,4 +89,4 @@ so do not rely on them as a safety alarm.
 
 ## License
 
-MIT, see `LICENSE`.
+MIT, Copyright (c) 2026 Martin Bradford Gago. See `LICENSE`.
