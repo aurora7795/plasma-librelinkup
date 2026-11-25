@@ -1,0 +1,4 @@
+config.json
+session.json
+*.bak
+__pycache__/

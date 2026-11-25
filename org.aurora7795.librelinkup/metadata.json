@@ -1,0 +1,20 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "aurora7795"
+            }
+        ],
+        "Category": "System Information",
+        "Description": "Blood glucose from LibreLinkUp: value and trend arrow in the panel, 12-hour graph in a popup",
+        "EnabledByDefault": true,
+        "Icon": "view-statistics",
+        "Id": "org.aurora7795.librelinkup",
+        "License": "MIT",
+        "Name": "LibreLinkUp Glucose",
+        "Version": "1.0.0",
+        "Website": "https://github.com/aurora7795/plasma-librelinkup"
+    },
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

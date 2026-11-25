@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0 http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
+  <group name="General">
+    <entry name="intervalSec" type="Int">
+      <default>60</default>
+      <min>60</min>
+      <max>600</max>
+    </entry>
+    <entry name="unit" type="String">
+      <default>mgdl</default>
+    </entry>
+  </group>
+  <group name="Notifications">
+    <entry name="alertsEnabled" type="Bool"><default>true</default></entry>
+    <entry name="lowOn" type="Bool"><default>true</default></entry>
+    <entry name="lowAt" type="Int"><default>70</default><min>40</min><max>120</max></entry>
+    <entry name="highOn" type="Bool"><default>true</default></entry>
+    <entry name="highAt" type="Int"><default>250</default><min>140</min><max>400</max></entry>
+    <entry name="fastOn" type="Bool"><default>false</default></entry>
+    <entry name="signalOn" type="Bool"><default>false</default></entry>
+    <entry name="repeatMin" type="Int"><default>30</default><min>0</min><max>240</max></entry>
+  </group>
+</kcfg>
