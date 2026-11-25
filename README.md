@@ -12,6 +12,17 @@ the same LibreView client as the
 > Abbott. It uses the unofficial LibreView follower API, which can change or
 > break without notice, and use may be subject to Abbott's terms.
 
+## Screenshots
+
+| | |
+|---|---|
+| ![Panel label](screenshots/panel.png) | ![Panel popup](screenshots/panel-popup.png) |
+| ![Large](screenshots/large.png) | ![Medium](screenshots/medium.png) |
+| ![Small](screenshots/small.png) | ![Tiny](screenshots/tiny.png) |
+| ![Transparent background](screenshots/transparent.png) | ![High alert](screenshots/high-alert.png) |
+| ![Menu](screenshots/menu.png) | ![Low glucose notification](screenshots/low-alert.png) |
+| ![Account settings](screenshots/account.png) | ![Notification settings](screenshots/notifications.png) |
+
 ## Features
 
 - Value and trend arrow in the panel; red when low or high; `?` appended when

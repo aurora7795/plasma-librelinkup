@@ -43,6 +43,7 @@ Item {
     ColumnLayout {
     id: col
     anchors.fill: parent
+    anchors.margins: Kirigami.Units.smallSpacing
     spacing: Kirigami.Units.smallSpacing
 
     // Value and trend arrow, scaled to the space available.
@@ -56,6 +57,9 @@ Item {
             anchors.fill: parent
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            // Arrow glyphs overhang their text box, so leave room at the sides.
+            leftPadding: Kirigami.Units.largeSpacing
+            rightPadding: Kirigami.Units.largeSpacing
             font.pixelSize: 400
             minimumPixelSize: 8
             fontSizeMode: Text.Fit
