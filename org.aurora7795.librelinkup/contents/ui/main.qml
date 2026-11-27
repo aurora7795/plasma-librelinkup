@@ -121,7 +121,7 @@ PlasmoidItem {
     // Thresholds are stored in mg/dL whatever unit is displayed.
     // Fire `kind` when `active` turns on, and again every `repeat` minutes while
     // it stays on (0 = once per episode). Turning off resets it.
-    function evaluate(kind, active, headline, body, urgency) {
+    function evaluate(kind, active, headline, body, urgency, icon) {
         var st = Object.assign({}, alertState)
         if (!active) {
             if (kind in st) { delete st[kind]; alertState = st }
@@ -133,12 +133,17 @@ PlasmoidItem {
         if (last !== undefined && (every <= 0 || now - last < every)) return
         st[kind] = now
         alertState = st
-        sendAlert(headline, body, urgency)
+        sendAlert(headline, body, urgency, icon)
     }
 
-    function sendAlert(headline, body, urgency) {
-        runner.connectSource("notify-send -a LibreLinkUp -u " + urgency + " -i dialog-warning "
+    function sendAlert(headline, body, urgency, icon) {
+        runner.connectSource("notify-send -a LibreLinkUp -u " + urgency + " -i " + (icon || "dialog-warning") + " "
             + q(headline) + " " + q(body) + " # " + (seq++))
+    }
+
+    // Breeze has no diagonal arrows, so the diagonals use plain up/down.
+    function alertIcon(trend) {
+        return ["", "arrow-down-double", "arrow-down", "arrow-right", "arrow-up", "arrow-up-double"][Math.max(1, Math.min(5, Number(trend) || 3))]
     }
 
     function checkAlert() {
@@ -155,10 +160,12 @@ PlasmoidItem {
         }
         var v = report.mgdl
         var body = fmt(v) + " " + (mmol ? "mmol/L" : "mg/dL") + " " + arrow(report.trend)
-        evaluate("low", cfg.lowOn && v <= cfg.lowAt, "Low glucose", body, "critical")
-        evaluate("high", cfg.highOn && v >= cfg.highAt, "High glucose", body, "normal")
-        evaluate("fastDown", cfg.fastOn && report.trend === 1, "Falling fast", body, "normal")
-        evaluate("fastUp", cfg.fastOn && report.trend === 5, "Rising fast", body, "normal")
+        var a = arrow(report.trend)
+        var ic = alertIcon(report.trend)
+        evaluate("low", cfg.lowOn && v <= cfg.lowAt, "Low glucose " + a, body, "critical", ic)
+        evaluate("high", cfg.highOn && v >= cfg.highAt, "High glucose " + a, body, "normal", ic)
+        evaluate("fastDown", cfg.fastOn && report.trend === 1, "Falling fast ↓↓", body, "normal", "arrow-down-double")
+        evaluate("fastUp", cfg.fastOn && report.trend === 5, "Rising fast ↑↑", body, "normal", "arrow-up-double")
     }
 
     // Right-click menu: works at every size, including the tiny desktop view.

@@ -13,7 +13,7 @@
         "Id": "org.aurora7795.librelinkup",
         "License": "MIT",
         "Name": "LibreLinkUp Monitor",
-        "Version": "1.0.2",
+        "Version": "1.0.3",
         "Website": "https://github.com/aurora7795/plasma-librelinkup"
     },
     "X-Plasma-API-Minimum-Version": "6.0"
