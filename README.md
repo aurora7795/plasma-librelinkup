@@ -48,7 +48,7 @@ kpackagetool6 -t Plasma/Applet -i org.aurora7795.librelinkup
 ```
 
 Then right-click the panel, **Add or Manage Widgets…**, and add
-**LibreLinkUp Glucose**. To update use `-u` instead of `-i`; to remove use `-r`.
+**LibreLinkUp Monitor**. To update use `-u` instead of `-i`; to remove use `-r`.
 You can try it without a panel using
 `plasmawindowed org.aurora7795.librelinkup`.
 
